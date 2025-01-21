@@ -1,21 +1,69 @@
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
+  @tailwind components;
+  @tailwind utilities;
+  
+  @layer base {
+    body {
+      @apply font-primary bg-primary text-white leading-loose;
+    }
+    h1 {
+      @apply text-[48px] xl:text-[80px] leading-[1.1] font-semibold;
+    }
+    h2 {
+      @apply text-[36px] xl:text-[48px] leading-[1.1] font-semibold;
+    }
+    h3 {
+      @apply text-[20px] xl:text-[24px] leading-[1.1] font-semibold;
+    }
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+
+/* CSS */
+.button-game {
+  background-color: #fbeee0;
+  border: 2px solid #422800;
+  border-radius: 30px;
+  box-shadow: #422800 4px 4px 0 0;
+  color: #422800;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.button-game:hover {
+  background-color: #fff;
+}
+
+.button-game:active {
+  box-shadow: #422800 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+
+@media (min-width: 768px) {
+  .button-game {
+    min-width: 120px;
+    padding: 0 25px;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+
+  }
+
+.skecth {
+    position: absolute;
+    width: 1212px;
+    height: 7px;
+    z-index: 1;
 }
+
+
+
+  
