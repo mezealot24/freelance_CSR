@@ -24,7 +24,21 @@ export const ChatBubble = ({ type, message, avatar }: ChatBubbleProps) => {
 				</motion.div>
 				<motion.div
 					variants={messageVariants}
-					className="bg-gray-200 rounded-lg p-3 max-w-[80%]"
+					className="relative bg-gray-200 rounded-lg p-3 max-w-[80%] 
+			  before:content-[''] 
+			  before:absolute 
+			  before:left-[-10px] 
+			  before:top-[10px] 
+			  before:w-0 
+			  before:h-0 
+			  before:border-l-[10px] 
+			  before:border-l-transparent 
+			  before:border-r-[10px] 
+			  before:border-r-gray-200 
+			  before:border-t-[10px] 
+			  before:border-t-gray-200 
+			  before:border-b-[10px] 
+			  before:border-b-transparent"
 				>
 					<p className="text-gray-800">{message}</p>
 				</motion.div>
@@ -40,7 +54,21 @@ export const ChatBubble = ({ type, message, avatar }: ChatBubbleProps) => {
 		>
 			<motion.div
 				variants={messageVariants}
-				className="bg-blue-500 text-white rounded-lg p-3 max-w-[80%]"
+				className="relative bg-blue-500 text-white rounded-lg p-3 max-w-[80%] 
+			  after:content-[''] 
+			  after:absolute 
+			  after:right-[-10px] 
+			  after:top-[10px] 
+			  after:w-0 
+			  after:h-0 
+			  after:border-r-[10px] 
+			  after:border-r-transparent 
+			  after:border-l-[10px] 
+			  after:border-l-blue-500 
+			  after:border-t-[10px] 
+			  after:border-t-blue-500 
+			  after:border-b-[10px] 
+			  after:border-b-transparent"
 			>
 				<p>{message}</p>
 			</motion.div>
