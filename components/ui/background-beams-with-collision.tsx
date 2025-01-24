@@ -37,8 +37,8 @@ export const BackgroundBeamsWithCollision = ({
 const BeamsRenderer = ({
 	containerRef,
 	parentRef,
-	beamOptions = {},
-}: BeamsRendererProps) => {
+}: //beamOptions = {},
+BeamsRendererProps) => {
 	const beams = [
 		{
 			initialX: 10,

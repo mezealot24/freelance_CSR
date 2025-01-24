@@ -1,7 +1,6 @@
 export interface QuizQuestion {
-    id: number;
-    scenario: string;
-    isScam: boolean;
-    explanation: string;
-    redFlags?: string[];
-  }
+  id: number;
+  isScam: boolean;
+  explanation: string;
+  redFlags: string[];
+}

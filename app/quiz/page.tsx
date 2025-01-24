@@ -6,11 +6,6 @@ import { chatMessages } from "@/data/chatMessages";
 import Underline from "@/components/ui/Underline";
 import { useQuizStore } from "@/store/quizStore";
 
-interface QuizProps {
-	showExplanation?: boolean;
-	setQuizComplete?: () => void;
-}
-
 const Quiz = () => {
 	const { setQuizComplete } = useQuizStore();
 	const [visibleCount, setVisibleCount] = useState(0);

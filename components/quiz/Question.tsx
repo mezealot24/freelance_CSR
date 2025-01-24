@@ -14,10 +14,9 @@ interface QuestionProps {
 }
 
 export default function Question({ animationStyle }: QuestionProps) {
-	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [showExplanation, setShowExplanation] = useState(false);
-	const [displayText, setDisplayText] = useState("");
 	const [score, setScore] = useState(0);
+	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [userAnswer, setUserAnswer] = useState<boolean | null>(null);
 	const defaultAnimationStyle: AnimationStyle = {
 		initial: { opacity: 0, y: 20 },
@@ -43,32 +42,12 @@ export default function Question({ animationStyle }: QuestionProps) {
 		setShowExplanation(true);
 	};
 
-	useEffect(() => {
-		if (!showExplanation) {
-			const scenario = quizQuestions[currentQuestion].scenario;
-			const words = scenario.split(" ");
-			let wordIndex = 0;
-			setDisplayText("");
-
-			const timer = setInterval(() => {
-				if (wordIndex < words.length) {
-					setDisplayText((prev) => prev + words[wordIndex] + " ");
-					wordIndex++;
-				} else {
-					clearInterval(timer);
-				}
-			}, 200); // Adjust timing between words
-
-			return () => clearInterval(timer);
-		}
-	}, [currentQuestion, showExplanation]);
-
 	return (
 		<motion.div
 			{...combinedAnimationStyle}
-			className="container mx-auto h-auto px-4 py-8"
+			className="container mx-auto h-[40vh] min-h-[300px] max-h-[500px] px-4 py-8"
 		>
-			<Card className="flex flex-col lg:h-[600px] justify-center items-center">
+			<Card className="flex flex-col h-full justify-center items-center overflow-hidden">
 				<CardHeader className="py-6 lg:py-12 flex-none text-center">
 					<div className="mb-4">
 						<Image
@@ -91,9 +70,6 @@ export default function Question({ animationStyle }: QuestionProps) {
 							transition={{ duration: 0.3 }}
 							className="flex flex-col justify-center items-center w-full"
 						>
-							<p className="text-lg text-center mb-6 min-h-[120px] flex items-center justify-center px-4">
-								{displayText}
-							</p>
 							{!showExplanation ? (
 								<div className="flex gap-3 mt-4 px-4">
 									<Button
