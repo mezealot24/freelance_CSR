@@ -14,7 +14,11 @@ const eslintConfig = [
 	{
 		rules: {
 			"@typescript-eslint/no-unused-vars": "off", // ปิดการตรวจสอบ unused variables
-			"react-hooks/exhaustive-deps": "warn", // ลดจาก error เป็น warning
+			"react-hooks/exhaustive-deps": "warn", // ลดจาก error เป็น
+			"@typescript-eslint/no-unused-vars": [
+				"error",
+				{ argsIgnorePattern: "^_" },
+			],
 		},
 	},
 ];
