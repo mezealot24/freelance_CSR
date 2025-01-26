@@ -89,7 +89,7 @@ export default function Page() {
 			{/* Mobile Layout */}
 			<div className="lg:hidden">
 				<main className="min-h-screen flex items-center justify-center pt-2">
-					<div className="container mx-auto px-4 py-8 flex flex-col space-y-2">
+					<div className="container mx-auto px-4 py-2 flex flex-col space-y-2">
 						<Button
 							onClick={handleStartOver}
 							className="bg-pink-400 hover:bg-pink-500 text-white"
