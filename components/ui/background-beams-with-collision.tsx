@@ -1,15 +1,8 @@
 "use client";
+
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import React, { useRef, useState, useEffect, RefObject } from "react";
-
-interface BeamsRendererProps {
-	containerRef: RefObject<HTMLDivElement>;
-	parentRef: RefObject<HTMLDivElement>;
-	beamOptions?: {
-		// ...beam options types
-	};
-}
+import React, { useRef, useState, useEffect } from "react";
 
 export const BackgroundBeamsWithCollision = ({
 	children,
@@ -20,80 +13,44 @@ export const BackgroundBeamsWithCollision = ({
 }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const parentRef = useRef<HTMLDivElement>(null);
+	const [beams, setBeams] = useState<
+		Array<{
+			initialX: number;
+			translateX: number;
+			duration: number;
+			repeatDelay: number;
+			delay: number;
+			className: string;
+		}>
+	>([]);
+
+	useEffect(() => {
+		const generateBeams = (count: number = 20) => {
+			const maxWidth = window.innerWidth;
+			return Array.from({ length: count }, () => {
+				const xPosition = Math.random() * maxWidth;
+				return {
+					initialX: xPosition,
+					translateX: xPosition,
+					duration: Math.random() * 8 + 3,
+					repeatDelay: Math.random() * 12 + 2,
+					delay: Math.random() * 4 + 1,
+					className: `h-${Math.floor(Math.random() * 16 + 4)}`,
+				};
+			});
+		};
+
+		setBeams(generateBeams(20));
+	}, []);
 
 	return (
-		<div ref={parentRef} className={cn("relative overflow-hidden", className)}>
-			<div ref={containerRef} className="relative z-10">
-				{children}
-			</div>
-			<BeamsRenderer
-				containerRef={containerRef as RefObject<HTMLDivElement>}
-				parentRef={parentRef as RefObject<HTMLDivElement>}
-			/>
-		</div>
-	);
-};
-
-const BeamsRenderer = ({
-	containerRef,
-	parentRef,
-}: //beamOptions = {},
-BeamsRendererProps) => {
-	const beams = [
-		{
-			initialX: 10,
-			translateX: 10,
-			duration: 7,
-			repeatDelay: 3,
-			delay: 2,
-		},
-		{
-			initialX: 600,
-			translateX: 600,
-			duration: 3,
-			repeatDelay: 3,
-			delay: 4,
-		},
-		{
-			initialX: 100,
-			translateX: 100,
-			duration: 7,
-			repeatDelay: 7,
-			className: "h-6",
-		},
-		{
-			initialX: 400,
-			translateX: 400,
-			duration: 5,
-			repeatDelay: 14,
-			delay: 4,
-		},
-		{
-			initialX: 800,
-			translateX: 800,
-			duration: 11,
-			repeatDelay: 2,
-			className: "h-20",
-		},
-		{
-			initialX: 1000,
-			translateX: 1000,
-			duration: 4,
-			repeatDelay: 2,
-			className: "h-12",
-		},
-		{
-			initialX: 1200,
-			translateX: 1200,
-			duration: 6,
-			repeatDelay: 4,
-			delay: 2,
-			className: "h-6",
-		},
-	];
-
-	return (
-		<>
+		<div
+			ref={parentRef}
+			className={cn(
+				"fixed w-full h-full inset-0 overflow-hidden -z-10",
+				className
+			)}
+		>
 			{beams.map((beam) => (
 				<CollisionMechanism
 					key={beam.initialX + "beam-idx"}
@@ -102,23 +59,20 @@ BeamsRendererProps) => {
 					parentRef={parentRef}
 				/>
 			))}
+			{children}
 			<div
 				ref={containerRef}
 				className="absolute bottom-0 bg-neutral-100 w-full inset-x-0 pointer-events-none"
-				style={{
-					boxShadow:
-						"0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset",
-				}}
-			></div>
-		</>
+			/>
+		</div>
 	);
 };
 
 const CollisionMechanism = React.forwardRef<
 	HTMLDivElement,
 	{
-		containerRef: React.RefObject<HTMLDivElement>;
-		parentRef: React.RefObject<HTMLDivElement>;
+		containerRef: React.RefObject<HTMLDivElement | null>;
+		parentRef: React.RefObject<HTMLDivElement | null>;
 		beamOptions?: {
 			initialX?: number;
 			translateX?: number;

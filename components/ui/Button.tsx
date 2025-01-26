@@ -1,7 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
 
-const Button = ({ children, onClick, className }) => {
+interface ButtonProps {
+	children: React.ReactNode;
+	onClick?: () => void;
+	className?: string;
+}
+
+const Button: React.FC<ButtonProps> = ({ children, onClick, className }) => {
 	return (
 		<motion.button
 			onClick={onClick}

@@ -118,7 +118,9 @@ export default {
   		'accordion-up': 'accordion-up 0.2s ease-out'
   	}
   },
-    plugins: [animatePlugin, require("tailwindcss-animate")], // ใช้ตัวแปร animatePlugin ที่ import มา
+    plugins: [animatePlugin, require("tailwindcss-animate")]
+	 // ใช้ตัวแปร animatePlugin ที่ import มา
   };
 
+ 
 

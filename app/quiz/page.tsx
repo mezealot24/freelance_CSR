@@ -1,72 +1,188 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { ChatBubble } from "@/components/ChatBubble";
-import { chatMessages } from "@/data/chatMessages";
-import Underline from "@/components/ui/Underline";
+import Quiz from "@/components/quiz/Quiz";
+import React, { useRef, useState, useEffect } from "react";
+import { motion, Variants } from "framer-motion";
 import { useQuizStore } from "@/store/quizStore";
+import Question from "@/components/quiz/Question";
+import Button from "@/components/ui/Button";
+import { useRouter } from "next/navigation";
 
-const Quiz = () => {
-	const { setQuizComplete } = useQuizStore();
-	const [visibleCount, setVisibleCount] = useState(0);
-	const [showPrompt, setShowPrompt] = useState(false);
-	const [isScenarioComplete, setIsScenarioComplete] = useState(false);
-
-	// Effect for rendering chat messages
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setVisibleCount((prev) => {
-				if (prev < chatMessages.length) {
-					return prev + 1;
-				}
-				clearInterval(timer);
-				setShowPrompt(true);
-				return prev;
-			});
-		}, 2000);
-
-		return () => clearInterval(timer);
-	}, []);
-
-	// Effect for checking if quiz scenarios are complete
-	useEffect(() => {
-		if (visibleCount === chatMessages.length && showPrompt) {
-			setIsScenarioComplete(true);
-			setQuizComplete(true);
-		}
-	}, [visibleCount, showPrompt, setQuizComplete]);
-
-	const visibleMessages = chatMessages.slice(0, visibleCount);
-
-	return (
-		<div className="max-h-[80vh] overflow-hidden">
-			<div className="relative h-[70vh] mx-auto max-w-xl bg-rose-100 p-4 rounded-[60px] shadow-lg border-8 border-gray-400">
-				<div className="relative h-full flex flex-col justify-between">
-					<motion.div
-						className="absolute inset-0 m-[12px] p-4 rounded-[24px] overflow-y-auto"
-						initial="hidden"
-						animate="visible"
-					>
-						<div className="space-y-4">
-							{visibleMessages.map((chat) => (
-								<ChatBubble key={chat.id} {...chat} />
-							))}
-						</div>
-					</motion.div>
-				</div>
-			</div>
-			<Underline className="w-full mt-4" />
-
-			{/* Show a completion message or additional content if the scenario is complete */}
-			{isScenarioComplete && (
-				<div className="text-center mt-4">
-					<p className="text-green-600 font-bold">
-						Scenario Quiz Render Completed!
-					</p>
-				</div>
-			)}
-		</div>
-	);
+const slideAnimation: Variants = {
+	initial: { y: "100%" },
+	animate: { y: 0 },
+	exit: { y: "100%" },
 };
 
-export default Quiz;
+export default function Page() {
+	const {
+		quizComplete,
+		isAnswerCorrect,
+		currentQuestion,
+		totalQuestions,
+		setQuizComplete,
+	} = useQuizStore();
+	const { resetQuiz } = useQuizStore();
+	const questionContainerRef = useRef<HTMLDivElement>(null);
+	const [loading, setLoading] = useState(true);
+	const [quizRendered, setQuizRendered] = useState(false);
+	const [isScenarioComplete, setIsScenarioComplete] = useState(false);
+	const [hideQuestion, setHideQuestion] = useState(false);
+	const router = useRouter(); // Initialize useRouter
+
+	const handleScenarioComplete = (complete: boolean) => {
+		setIsScenarioComplete(complete);
+	};
+
+	useEffect(() => {
+		setLoading(true);
+		setHideQuestion(false);
+		const timer = setTimeout(() => {
+			setLoading(false);
+			setQuizRendered(true);
+		}, 1000);
+		return () => clearTimeout(timer);
+	}, [currentQuestion]);
+
+	const getBgColor = () => {
+		if (isAnswerCorrect === false)
+			return "bg-gradient-to-br from-red-100 to-red-200";
+		if (isAnswerCorrect === true)
+			return "bg-gradient-to-br from-green-100 to-emerald-200";
+		return "bg-[#FFE6C9]";
+	};
+
+	const renderQuizResult = () => {
+		if (
+			quizComplete &&
+			currentQuestion === totalQuestions - 1 &&
+			loading === false
+		) {
+			return null;
+		}
+	};
+
+	const handleNext = () => {
+		setHideQuestion(true);
+		setIsScenarioComplete(false);
+	};
+
+	const handleStartOver = () => {
+		// Reset quiz state and local storage
+		resetQuiz();
+
+		// Additional reset for specific states in this component
+		setLoading(true);
+		setQuizRendered(false);
+		setIsScenarioComplete(false);
+		setHideQuestion(false);
+	};
+
+	useEffect(() => {
+		if (currentQuestion >= totalQuestions) {
+			setQuizComplete(true);
+			router.push("/result");
+		}
+	}, [currentQuestion, totalQuestions, setQuizComplete, router]);
+
+	return (
+		<>
+			{/* Mobile Layout */}
+			<div className="lg:hidden">
+				<main className="min-h-screen flex items-center justify-center pt-[6rem]">
+					<div className="container mx-auto px-4 py-8">
+						<Button
+							onClick={handleStartOver}
+							className="bg-blue-500 hover:bg-blue-600 text-white"
+						>
+							Start Over
+						</Button>
+						<div className="grid grid-cols-1 gap-8">
+							{/* Render Quiz */}
+							<Quiz
+								key={currentQuestion}
+								onScenarioComplete={handleScenarioComplete}
+							/>
+
+							{/* Render Question only when Quiz and Scenario are ready */}
+							{renderQuizResult() ||
+								(quizRendered && !hideQuestion && isScenarioComplete && (
+									<motion.div
+										ref={questionContainerRef}
+										variants={slideAnimation}
+										initial="initial"
+										animate="animate"
+										exit="exit"
+										drag="y"
+										dragConstraints={{
+											top: 0,
+											bottom: 500,
+										}}
+										dragElastic={0.3}
+										className={`fixed bottom-0 left-0 right-0 
+                      max-h-full min-h-[300px] px-4 py-8 
+                      w-full z-50 shadow-lg rounded-t-3xl 
+                      overflow-hidden transition-colors duration-500
+                      ${getBgColor()}
+                    `}
+									>
+										<div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-orange-500 rounded-full cursor-grab" />
+										{loading ? (
+											<div className="flex items-center justify-center h-full">
+												<p>Loading...</p>
+											</div>
+										) : (
+											<Question
+												questionIndex={currentQuestion}
+												onNext={handleNext}
+											/>
+										)}
+									</motion.div>
+								))}
+						</div>
+					</div>
+				</main>
+			</div>
+
+			{/* Desktop Layout */}
+			<div className="hidden lg:block min-h-screen pt-[7rem]">
+				<div
+					className="
+            container 
+            max-w-7xl 
+            mx-auto 
+            flex 
+            min-h-[calc(100vh-7rem)] 
+            justify-center 
+            items-center 
+            bg-yellow-50 
+            overflow-hidden
+            rounded-xl
+            shadow-lg
+          "
+				>
+					{/* Left Side: Quiz */}
+					<div className="w-1/2 p-8 overflow-y-auto h-full">
+						<Quiz
+							key={currentQuestion}
+							onScenarioComplete={handleScenarioComplete}
+						/>
+					</div>
+
+					{/* Right Side: Question */}
+					<div className="w-1/2 p-8 bg-yellow-100 h-full">
+						{renderQuizResult() ||
+							(quizRendered && !hideQuestion && isScenarioComplete && (
+								<Question questionIndex={currentQuestion} onNext={handleNext} />
+							))}
+
+						{loading && (
+							<div className="flex items-center justify-center h-full">
+								<p>Loading new scenario...</p>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
+		</>
+	);
+}

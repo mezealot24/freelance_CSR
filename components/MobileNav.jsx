@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { ShieldCheck } from "lucide-react";
 import Link from "next/link";
-import path from "path";
 
 const MobileNav = () => {
 	const [activeItem, setActiveItem] = useState(null);

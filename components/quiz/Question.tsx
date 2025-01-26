@@ -1,107 +1,154 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useQuizStore } from "@/store/quizStore";
 import { quizQuestions } from "@/data/quizQuestions";
+import {
+	QuizQuestion,
+	TrueOrFalseQuestion,
+	ChoiceQuestion,
+} from "@/types/QuizQuestion";
 import Image from "next/image";
-import AnswerCard from "./AnswerCard";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Button from "@/components/ui/Button";
-import { AnimationStyle } from "@/types/animation";
+import { useRouter } from "next/navigation";
 
 interface QuestionProps {
-	animationStyle?: AnimationStyle;
+	questionIndex: number;
+	onNext?: () => void;
 }
 
-export default function Question({ animationStyle }: QuestionProps) {
-	const [showExplanation, setShowExplanation] = useState(false);
-	const [score, setScore] = useState(0);
-	const [currentQuestion, setCurrentQuestion] = useState(0);
-	const [userAnswer, setUserAnswer] = useState<boolean | null>(null);
-	const defaultAnimationStyle: AnimationStyle = {
-		initial: { opacity: 0, y: 20 },
-		animate: { opacity: 1, y: 0 },
-		exit: { opacity: 0, y: -20 },
-		transition: { duration: 0.3 },
-	};
+const Question = ({ questionIndex, onNext }: QuestionProps) => {
+	const router = useRouter();
+	const { setScore, setCurrentQuestion, setIsAnswerCorrect, setQuizComplete } =
+		useQuizStore();
 
-	const combinedAnimationStyle = {
-		...defaultAnimationStyle,
-		...animationStyle,
-	};
+	const question: QuizQuestion = quizQuestions[questionIndex];
+	const [phase, setPhase] = useState<"question" | "explanation" | "next">(
+		"question"
+	);
 
-	useEffect(() => {
-		console.log("Quiz has been rendered.");
-	}, []);
+	const handleAnswer = (answer: boolean | number) => {
+		let isCorrect: boolean;
 
-	const handleAnswer = (answer: boolean) => {
-		setUserAnswer(answer);
-		if (answer === quizQuestions[currentQuestion].isScam) {
-			setScore((prev) => prev + 1);
+		if (question.type === "trueorfalse") {
+			isCorrect = (question as TrueOrFalseQuestion).isScam === answer;
+		} else {
+			isCorrect =
+				typeof answer === "number" &&
+				(question as ChoiceQuestion).correctAnswer === answer;
 		}
-		setShowExplanation(true);
+
+		setIsAnswerCorrect(isCorrect);
+
+		if (isCorrect) {
+			const currentScore = useQuizStore.getState().score;
+			const newScore = currentScore + 1;
+			setScore(newScore);
+			localStorage.setItem("quizScore", newScore.toString());
+		}
+
+		setPhase("explanation");
+	};
+
+	const handleNext = () => {
+		const currentQuestion = useQuizStore.getState().currentQuestion;
+
+		if (currentQuestion + 1 < quizQuestions.length) {
+			setCurrentQuestion(currentQuestion + 1);
+
+			if (onNext) {
+				onNext();
+			}
+		} else {
+			// Ensure quiz is completed and redirected for the last question
+			setQuizComplete(true);
+			router.push("/result");
+		}
+	};
+
+	const cardAnimation = {
+		initial: { opacity: 0, scale: 0.8 },
+		animate: { opacity: 1, scale: 1 },
+		exit: { opacity: 0, scale: 0.8 },
 	};
 
 	return (
-		<motion.div
-			{...combinedAnimationStyle}
-			className="container mx-auto h-[40vh] min-h-[300px] max-h-[500px] px-4 py-8"
-		>
-			<Card className="flex flex-col h-full justify-center items-center overflow-hidden">
-				<CardHeader className="py-6 lg:py-12 flex-none text-center">
-					<div className="mb-4">
-						<Image
-							src="/avatars/Avatar1.svg"
-							alt="Scammer Avatar"
-							width={64}
-							height={64}
-							className="rounded-full mx-auto border-2 border-gray-200"
-						/>
-					</div>
-					<h2 className="text-4xl font-bold">What do you think?</h2>
-				</CardHeader>
-				<CardContent className="flex-1 flex flex-col justify-center w-full">
-					<AnimatePresence mode="wait">
-						<motion.div
-							key={currentQuestion}
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: -20 }}
-							transition={{ duration: 0.3 }}
-							className="flex flex-col justify-center items-center w-full"
-						>
-							{!showExplanation ? (
-								<div className="flex gap-3 mt-4 px-4">
+		<div className="container mx-auto h-[50vh] min-h-[300px] max-h-[600px] px-4 py-8">
+			<motion.div
+				variants={cardAnimation}
+				initial="initial"
+				animate="animate"
+				exit="exit"
+				transition={{ duration: 0.5, ease: "easeOut" }}
+			>
+				<Card className="w-full max-w-lg mx-auto h-auto">
+					<CardHeader>
+						<div>
+							<Image
+								src={`/icons/scammer-avatars/question-${question.id}.svg`}
+								alt={`Scammer icon for question ${question.id}`}
+								className="w-16 h-16 mx-auto mb-4"
+								width={64}
+								height={64}
+							/>
+							<CardTitle>
+								<h2 className="text-xl font-semibold text-center">
+									{question.question}
+								</h2>
+							</CardTitle>
+						</div>
+					</CardHeader>
+
+					{phase === "question" && (
+						<CardContent className="flex flex-col space-y-4">
+							{question.type === "trueorfalse" ? (
+								<div className="flex justify-around">
 									<Button
 										onClick={() => handleAnswer(false)}
-										className="flex-1 bg-green-600 hover:bg-green-700"
+										className="btn btn-outline btn-green"
 									>
 										Safe
 									</Button>
 									<Button
 										onClick={() => handleAnswer(true)}
-										className="flex-1 bg-red-600 hover:bg-red-700"
+										className="btn btn-outline btn-red"
 									>
-										Scam!
+										Scam
 									</Button>
 								</div>
 							) : (
-								<AnswerCard
-									isCorrect={
-										userAnswer === quizQuestions[currentQuestion].isScam
-									}
-									explanation={quizQuestions[currentQuestion].explanation}
-									onNext={() => {
-										setCurrentQuestion((prev) => prev + 1);
-										setShowExplanation(false);
-										setUserAnswer(null);
-									}}
-								/>
+								<div className="grid grid-cols-1 gap-4 text-sm">
+									{(question as ChoiceQuestion).options.map((option, index) => (
+										<Button
+											key={index}
+											onClick={() => handleAnswer(index)}
+											className="btn btn-outline"
+										>
+											{option}
+										</Button>
+									))}
+								</div>
 							)}
-						</motion.div>
-					</AnimatePresence>
-				</CardContent>
-			</Card>
-		</motion.div>
+						</CardContent>
+					)}
+
+					{phase === "explanation" && (
+						<CardContent>
+							<p className="text-center text-gray-700">
+								{question.explanation}
+							</p>
+							<div className="text-center mt-4">
+								<Button onClick={handleNext} className="btn btn-primary">
+									Next
+								</Button>
+							</div>
+						</CardContent>
+					)}
+				</Card>
+			</motion.div>
+		</div>
 	);
-}
+};
+
+export default Question;
