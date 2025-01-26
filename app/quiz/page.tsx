@@ -88,11 +88,11 @@ export default function Page() {
 		<>
 			{/* Mobile Layout */}
 			<div className="lg:hidden">
-				<main className="min-h-screen flex items-center justify-center pt-[6rem]">
-					<div className="container mx-auto px-4 py-8">
+				<main className="min-h-screen flex items-center justify-center pt-2">
+					<div className="container mx-auto px-4 py-8 flex flex-col space-y-2">
 						<Button
 							onClick={handleStartOver}
-							className="bg-blue-500 hover:bg-blue-600 text-white"
+							className="bg-pink-400 hover:bg-pink-500 text-white"
 						>
 							Start Over
 						</Button>
@@ -115,7 +115,7 @@ export default function Page() {
 										drag="y"
 										dragConstraints={{
 											top: 0,
-											bottom: 500,
+											bottom: 525,
 										}}
 										dragElastic={0.3}
 										className={`fixed bottom-0 left-0 right-0 

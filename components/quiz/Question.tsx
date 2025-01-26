@@ -74,7 +74,7 @@ const Question = ({ questionIndex, onNext }: QuestionProps) => {
 	};
 
 	return (
-		<div className="container mx-auto h-[50vh] min-h-[300px] max-h-[600px] px-4 py-8">
+		<div className="container mx-auto h-[50vh] min-h-[500px] max-h-[500px] px-4 py-8">
 			<motion.div
 				variants={cardAnimation}
 				initial="initial"
@@ -82,7 +82,7 @@ const Question = ({ questionIndex, onNext }: QuestionProps) => {
 				exit="exit"
 				transition={{ duration: 0.5, ease: "easeOut" }}
 			>
-				<Card className="w-full max-w-lg mx-auto h-auto">
+				<Card className="w-full max-w-lg mx-auto h-full">
 					<CardHeader>
 						<div>
 							<Image
