@@ -6,21 +6,21 @@ interface QuizState {
   currentQuestion: number;
   totalQuestions: number;
   score: number;
-  isAnswerCorrect: boolean;
+  isAnswerCorrect: boolean | null;
   setQuizComplete: (complete: boolean) => void;
   setCurrentQuestion: (questionIndex: number) => void;
   setScore: (score: number) => void;
-  setIsAnswerCorrect: (isCorrect: boolean) => void;
+  setIsAnswerCorrect: (isCorrect: boolean | null) => void;
   resetQuiz: () => void;
   loadScoreFromStorage: () => void;
 }
 
-export const useQuizStore = create<QuizState>((set, get) => ({
+export const useQuizStore = create<QuizState>((set) => ({
   quizComplete: false,
   currentQuestion: 0,
   totalQuestions: quizQuestions.length,
   score: 0, // ค่าเริ่มต้นเป็น 0
-  isAnswerCorrect: false,
+  isAnswerCorrect: null,
   setQuizComplete: (complete) => set({ quizComplete: complete }),
   setCurrentQuestion: (questionIndex) => 
     set((state) => {
@@ -40,13 +40,13 @@ export const useQuizStore = create<QuizState>((set, get) => ({
     set((state) => ({
       score: score >= 0 ? score : state.score, // ป้องกันค่าติดลบ
     })),
-  setIsAnswerCorrect: (isCorrect) => set({ isAnswerCorrect: isCorrect }),
+    setIsAnswerCorrect: (isCorrect: boolean | null) => set({ isAnswerCorrect: isCorrect }),
   resetQuiz: () => {
     localStorage.removeItem("quizScore");
     set({
       currentQuestion: 0,
       score: 0,
-      isAnswerCorrect: false,
+      isAnswerCorrect: null,
       quizComplete: false,
     });
   },

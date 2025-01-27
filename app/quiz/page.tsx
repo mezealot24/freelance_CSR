@@ -1,17 +1,9 @@
 "use client";
 import Quiz from "@/components/quiz/Quiz";
-import React, { useRef, useState, useEffect } from "react";
-import { motion, Variants } from "framer-motion";
+import React, { useState, useEffect } from "react";
 import { useQuizStore } from "@/store/quizStore";
 import Question from "@/components/quiz/Question";
-import Button from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
-
-const slideAnimation: Variants = {
-	initial: { y: "100%" },
-	animate: { y: 0 },
-	exit: { y: "100%" },
-};
 
 export default function Page() {
 	const {
@@ -20,14 +12,15 @@ export default function Page() {
 		currentQuestion,
 		totalQuestions,
 		setQuizComplete,
+		setIsAnswerCorrect,
 	} = useQuizStore();
-	const { resetQuiz } = useQuizStore();
-	const questionContainerRef = useRef<HTMLDivElement>(null);
+
 	const [loading, setLoading] = useState(true);
 	const [quizRendered, setQuizRendered] = useState(false);
 	const [isScenarioComplete, setIsScenarioComplete] = useState(false);
 	const [hideQuestion, setHideQuestion] = useState(false);
-	const router = useRouter(); // Initialize useRouter
+	const [bgColor, setBgColor] = useState<string | null>(null);
+	const router = useRouter();
 
 	const handleScenarioComplete = (complete: boolean) => {
 		setIsScenarioComplete(complete);
@@ -43,12 +36,17 @@ export default function Page() {
 		return () => clearTimeout(timer);
 	}, [currentQuestion]);
 
+	// Watch for changes in isAnswerCorrect and update bgColor
+	useEffect(() => {
+		if (isAnswerCorrect === true) {
+			setBgColor("bg-gradient-to-br from-green-100 to-emerald-200");
+		} else if (isAnswerCorrect === false) {
+			setBgColor("bg-gradient-to-br from-red-200 to-red-300");
+		}
+	}, [isAnswerCorrect]);
+
 	const getBgColor = () => {
-		if (isAnswerCorrect === false)
-			return "bg-gradient-to-br from-red-100 to-red-200";
-		if (isAnswerCorrect === true)
-			return "bg-gradient-to-br from-green-100 to-emerald-200";
-		return "bg-[#FFE6C9]";
+		return bgColor || "bg-[#FFE4CC]"; // Default color if bgColor is null
 	};
 
 	const renderQuizResult = () => {
@@ -64,17 +62,9 @@ export default function Page() {
 	const handleNext = () => {
 		setHideQuestion(true);
 		setIsScenarioComplete(false);
-	};
-
-	const handleStartOver = () => {
-		// Reset quiz state and local storage
-		resetQuiz();
-
-		// Additional reset for specific states in this component
 		setLoading(true);
-		setQuizRendered(false);
-		setIsScenarioComplete(false);
-		setHideQuestion(false);
+		setIsAnswerCorrect(null);
+		setBgColor(null); // Reset background color
 	};
 
 	useEffect(() => {
@@ -88,79 +78,40 @@ export default function Page() {
 		<>
 			{/* Mobile Layout */}
 			<div className="lg:hidden">
-				<main className="min-h-screen flex items-center justify-center pt-2">
-					<div className="container mx-auto px-4 py-8 flex flex-col space-y-2">
-						<Button
-							onClick={handleStartOver}
-							className="bg-pink-400 hover:bg-pink-500 text-white"
-						>
-							Start Over
-						</Button>
-						<div className="grid grid-cols-1 gap-8">
-							{/* Render Quiz */}
-							<Quiz
-								key={currentQuestion}
-								onScenarioComplete={handleScenarioComplete}
-							/>
+				<main className="flex flex-col justify-between gap-6 w-full sm:w-11/12 lg:w-2/3 tw-box lg:min-h-[calc(100vh-120px)] h-fit">
+					<Quiz
+						key={currentQuestion}
+						onScenarioComplete={handleScenarioComplete}
+					/>
 
-							{/* Render Question only when Quiz and Scenario are ready */}
-							{renderQuizResult() ||
-								(quizRendered && !hideQuestion && isScenarioComplete && (
-									<motion.div
-										ref={questionContainerRef}
-										variants={slideAnimation}
-										initial="initial"
-										animate="animate"
-										exit="exit"
-										drag="y"
-										dragConstraints={{
-											top: 0,
-											bottom: 525,
-										}}
-										dragElastic={0.3}
-										className={`fixed bottom-0 left-0 right-0 
-                      max-h-full min-h-[300px] px-4 py-8 
-                      w-full z-50 shadow-lg rounded-t-3xl 
-                      overflow-hidden transition-colors duration-500
-                      ${getBgColor()}
-                    `}
-									>
-										<div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-orange-500 rounded-full cursor-grab" />
-										{loading ? (
-											<div className="flex items-center justify-center h-full">
-												<p>Loading...</p>
-											</div>
-										) : (
-											<Question
-												questionIndex={currentQuestion}
-												onNext={handleNext}
-											/>
-										)}
-									</motion.div>
-								))}
-						</div>
-					</div>
+					{renderQuizResult() ||
+						(quizRendered && !hideQuestion && isScenarioComplete && (
+							<div
+								className={`fixed bottom-0 left-0 right-0 
+                  min-h-[50vh] px-4 py-8 
+                  w-full z-50 shadow-lg rounded-t-3xl 
+                  overflow-hidden transition-colors duration-500
+                  ${getBgColor()}
+                `}
+							>
+								{loading ? (
+									<div className="flex items-center justify-center">
+										<p>Loading new scenario...</p>
+									</div>
+								) : (
+									<Question
+										questionIndex={currentQuestion}
+										onNext={handleNext}
+									/>
+								)}
+							</div>
+						))}
 				</main>
 			</div>
 
 			{/* Desktop Layout */}
 			<div className="hidden lg:block min-h-screen pt-[7rem]">
-				<div
-					className="
-            container 
-            max-w-7xl 
-            mx-auto 
-            flex 
-            min-h-[calc(100vh-7rem)] 
-            justify-center 
-            items-center 
-            bg-yellow-50 
-            overflow-hidden
-            rounded-xl
-            shadow-lg
-          "
-				>
-					{/* Left Side: Quiz */}
+				<div className="container max-w-7xl mx-auto flex min-h-[calc(100vh-7rem)] justify-center items-center bg-yellow-50 overflow-hidden rounded-xl shadow-lg">
 					<div className="w-1/2 p-8 overflow-y-auto h-full">
 						<Quiz
 							key={currentQuestion}
@@ -168,8 +119,9 @@ export default function Page() {
 						/>
 					</div>
 
-					{/* Right Side: Question */}
-					<div className="w-1/2 p-8 bg-yellow-100 h-full">
+					<div
+						className={`w-1/2 p-8 ${getBgColor()} h-full transition-colors duration-500`}
+					>
 						{renderQuizResult() ||
 							(quizRendered && !hideQuestion && isScenarioComplete && (
 								<Question questionIndex={currentQuestion} onNext={handleNext} />

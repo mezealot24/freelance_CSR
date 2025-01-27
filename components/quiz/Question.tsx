@@ -8,7 +8,7 @@ import {
 	QuizQuestion,
 	TrueOrFalseQuestion,
 	ChoiceQuestion,
-} from "@/types/QuizQuestion";
+} from "@/types/question";
 import Image from "next/image";
 import Button from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
@@ -74,7 +74,7 @@ const Question = ({ questionIndex, onNext }: QuestionProps) => {
 	};
 
 	return (
-		<div className="container mx-auto h-[50vh] min-h-[500px] max-h-[500px] px-4 py-8">
+		<div className="container mx-auto h-[45vh] px-4 py-2">
 			<motion.div
 				variants={cardAnimation}
 				initial="initial"
@@ -85,13 +85,13 @@ const Question = ({ questionIndex, onNext }: QuestionProps) => {
 				<Card className="w-full max-w-lg mx-auto h-full">
 					<CardHeader>
 						<div>
-							<Image
+							{/* 							<Image
 								src={`/icons/scammer-avatars/question-${question.id}.svg`}
 								alt={`Scammer icon for question ${question.id}`}
 								className="w-16 h-16 mx-auto mb-4"
 								width={64}
 								height={64}
-							/>
+							/> */}
 							<CardTitle>
 								<h2 className="text-xl font-semibold text-center">
 									{question.question}

@@ -11,7 +11,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = () => {
 	return (
-		<header className="md:py-2 xl:py-10 bg-grey-100 shadow-md lg:w-full">
+		<header className="py-2 xl:py-10 bg-grey-100 shadow-md lg:w-full">
 			<div className="container mx-auto px-4">
 				{/* Add container with padding */}
 				<div className="flex justify-between items-center">

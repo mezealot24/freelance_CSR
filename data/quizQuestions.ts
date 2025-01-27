@@ -1,4 +1,4 @@
-import { TrueOrFalseQuestion, ChoiceQuestion } from '@/types/QuizQuestion';
+import { TrueOrFalseQuestion, ChoiceQuestion } from '@/types/question';
 
 export const trueOrFalseQuestions: TrueOrFalseQuestion[] = [
   {

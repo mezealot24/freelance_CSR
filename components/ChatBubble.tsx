@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ChatMessage } from "@/types/QuizQuestion";
+import { ChatMessage } from "@/types/question";
 import { avatarVariants, messageVariants } from "@/animations/chatAnimations";
 
 type ChatBubbleProps = Omit<ChatMessage, "id">;

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Header from "@/components/Header";
+
 import "./globals.css";
-import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
+
 import React from "react";
 
 const geistSans = Geist({
@@ -35,9 +35,7 @@ export default function RootLayout({
 
 		  `}
 			>
-				<Header className="relative z-50" />
-
-				<BackgroundBeamsWithCollision>{children}</BackgroundBeamsWithCollision>
+				{children}
 			</body>
 		</html>
 	);

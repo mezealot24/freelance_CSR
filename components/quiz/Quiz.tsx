@@ -65,11 +65,11 @@ const Quiz = ({
 	}, [visibleMessages]);
 
 	return (
-		<div className="max-h-[80vh] overflow-hidden ">
-			<div className="relative h-[70vh] mx-auto max-w-xl bg-rose-100 p-4 rounded-[60px] shadow-lg border-8 border-pink-300">
+		<div className="max-h-[60vh] overflow-hidden ">
+			<div className="relative h-[50vh] mx-auto max-w-xl bg-rose-100 p-4 lg:rounded-[60px] shadow-lg border-8 border-pink-300">
 				<div className="relative h-full flex flex-col justify-between">
 					<motion.div
-						className="absolute inset-0 m-[12px] p-4 rounded-[24px] overflow-y-auto scroll-smooth"
+						className="absolute inset-0 m-[12px] p-4 overflow-y-auto scroll-smooth"
 						initial="hidden"
 						animate="visible"
 					>
@@ -98,15 +98,15 @@ const Quiz = ({
 					</motion.div>
 				</div>
 			</div>
-			<Underline className="w-full mt-4" />
+			<Underline className="w-1/3 mt-2 " />
 
-			{isScenarioComplete && (
+			{/* 			{isScenarioComplete && (
 				<div className="text-center mt-4 lg:hidden">
 					<p className="text-green-600 font-bold">
 						Slide up to answer the question
 					</p>
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 };
