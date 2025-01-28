@@ -10,14 +10,13 @@ export const platformOptions = [
 
 //type of scam
 export const scamTypeOptions = [
-    { id: "callcenter", label: "Call Center" },
-    { id: "sms", label: "SMS หลอกลวง" },
-    { id: "shopping", label: "Shopping Online" },
-    { id: "romance", label: "Romance Scam" },
-    { id: "investment", label: "Investment Scam" },
-    { id: "other", label: "อื่นๆ" },
+  { id: "callcenter", label: "Call Center" },
+  { id: "sms", label: "SMS หลอกลวง" },
+  { id: "shopping", label: "Shopping Online" },
+  { id: "romance", label: "Romance Scam" },
+  { id: "investment", label: "Investment Scam" },
+  { id: "other", label: "อื่นๆ" },
 ];
-
 
 //provinces
 export const provinces = [

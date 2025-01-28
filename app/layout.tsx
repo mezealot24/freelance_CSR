@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 
 import "./globals.css";
 
@@ -26,7 +27,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" className="h-full">
+		<html lang="en" className="h-full bg-gray-900 dark:text-white">
 			<body
 				className={`
 			${geistSans.variable} 
@@ -36,6 +37,7 @@ export default function RootLayout({
 		  `}
 			>
 				{children}
+				<Toaster position="top-center" />
 			</body>
 		</html>
 	);

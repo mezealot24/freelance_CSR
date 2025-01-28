@@ -2,11 +2,11 @@
 
 import React from "react";
 import Image from "next/image";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 const Home = () => {
 	const handleProtectionClick = () => {
-		window.location.href = "/scams";
+		window.location.href = "/form";
 	};
 
 	const handleQuizClick = () => {
@@ -23,7 +23,7 @@ const Home = () => {
 						{/* Buttons */}
 						<div className="flex flex-col xl:flex-row items-center gap-8">
 							<Button onClick={handleProtectionClick} className="btn">
-								Protection
+								Survey
 							</Button>
 							<Button onClick={handleQuizClick} className="btn">
 								Quiz

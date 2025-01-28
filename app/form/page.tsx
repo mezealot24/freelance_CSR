@@ -1,4 +1,7 @@
-const Survey = () => {
-	return <div>Survey</div>;
+import React from "react";
+import SurveyForm from "@/components/auth/SurveyForm";
+
+const SurveyPage = () => {
+	return <SurveyForm />;
 };
-export default Survey;
+export default SurveyPage;

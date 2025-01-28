@@ -9,8 +9,7 @@ import {
 	TrueOrFalseQuestion,
 	ChoiceQuestion,
 } from "@/types/question";
-import Image from "next/image";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 interface QuestionProps {
