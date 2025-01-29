@@ -60,7 +60,7 @@ const SurveyForm: React.FC = () => {
 		try {
 			setIsSubmitting(true);
 
-			const response = await fetch("/form/api/route", {
+			const response = await fetch("/form/api/", {
 				// Fixed API route path
 				method: "POST",
 				headers: {
@@ -77,7 +77,7 @@ const SurveyForm: React.FC = () => {
 			}
 
 			toast.success("ส่งแบบฟอร์มสำเร็จ");
-			router.push("/thank-you");
+			router.push("/quiz");
 		} catch (error) {
 			console.error("Form submission error:", error);
 			toast.error(

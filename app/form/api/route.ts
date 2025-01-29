@@ -4,11 +4,16 @@ import axios from "axios";
 const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL;
 
 export async function POST(req: Request) {
+  if (!GOOGLE_SCRIPT_URL) {
+    return NextResponse.json(
+      { error: "Missing Google Script URL" },
+      { status: 500 }
+    );
+  }
+
   try {
     const data = await req.json();
-    
-    // Format data as URL parameters
-    const params = new URLSearchParams();
+    console.log("Received form data:", data);
     const rowData = [
       data.ageRange,
       data.province,
@@ -20,33 +25,30 @@ export async function POST(req: Request) {
       data.platforms.join(", "),
       new Date().toISOString()
     ];
+    console.log("Prepared row data:", rowData);
 
-    // Add data as parameters
-    params.append('data', JSON.stringify(rowData));
-
-    // Make request with params in URL
     const response = await axios({
-      method: 'post',
-      url: `${GOOGLE_SCRIPT_URL}?${params.toString()}`,
+      method: 'POST',
+      url: GOOGLE_SCRIPT_URL,
+      data: { data: rowData },
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       }
     });
 
+    console.log("Google Script response:", response.data);  // Add logging
+
     if (response.status !== 200) {
-      console.error("Google Sheets Error:", response.data);
-      return NextResponse.json(
-        { error: "Failed to save to Google Sheets" },
-        { status: 500 }
-      );
+      throw new Error('Failed to save to Google Sheets');
     }
 
     return NextResponse.json({ success: true });
-    
-  } catch (error) {
-    console.error("API Error:", error);
+
+  } catch (error: any) {
+    console.error('API Error:', error.response?.data || error.message);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Failed to save data" },
       { status: 500 }
     );
   }
