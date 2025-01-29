@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useQuizStore } from "@/store/quizStore";
-import Button from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 

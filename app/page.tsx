@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 
 const Home = () => {
 	const handleProtectionClick = () => {
@@ -22,12 +22,8 @@ const Home = () => {
 						<h1 className="h1 mb-6 text-accent">Digital Awareness</h1>
 						{/* Buttons */}
 						<div className="flex flex-col xl:flex-row items-center gap-8">
-							<Button onClick={handleProtectionClick} className="btn">
-								Survey
-							</Button>
-							<Button onClick={handleQuizClick} className="btn">
-								Quiz
-							</Button>
+							<Button onClick={handleProtectionClick}>Survey</Button>
+							<Button onClick={handleQuizClick}>Quiz</Button>
 						</div>
 					</div>
 
