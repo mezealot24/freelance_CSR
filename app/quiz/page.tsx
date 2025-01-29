@@ -78,7 +78,7 @@ export default function Page() {
 		<>
 			{/* Mobile Layout */}
 			<div className="lg:hidden">
-				<main className="flex flex-col justify-between gap-6 w-full sm:w-11/12 lg:w-2/3 tw-box lg:min-h-[calc(100vh-120px)] h-fit">
+				<main className="flex flex-col justify-between gap-6 w-full sm:w-11/12 lg:w-2/3 tw-box lg:min-h-[calc(100vh-120px)] h-fit mx-auto">
 					<Quiz
 						key={currentQuestion}
 						onScenarioComplete={handleScenarioComplete}

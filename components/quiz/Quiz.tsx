@@ -3,8 +3,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ChatBubble } from "@/components/ChatBubble";
 import { quizQuestions } from "@/data/quizQuestions";
-import Underline from "@/components/ui/Underline";
+import Underline from "@/components/Underline";
 import { useQuizStore } from "@/store/quizStore";
+import ChatHeader from "../ChatHeader";
 
 const Quiz = ({
 	onScenarioComplete = () => {},
@@ -66,7 +67,8 @@ const Quiz = ({
 
 	return (
 		<div className="max-h-[60vh] overflow-hidden ">
-			<div className="relative h-[50vh] mx-auto max-w-xl bg-rose-100 p-4 lg:rounded-[60px] shadow-lg border-8 border-pink-300">
+			<ChatHeader />
+			<div className="relative h-[50vh] mx-auto max-w-xl bg-rose-100 p-4 lg:rounded-[60px] shadow-lg overflow-hidden">
 				<div className="relative h-full flex flex-col justify-between">
 					<motion.div
 						className="absolute inset-0 m-[12px] p-4 overflow-y-auto scroll-smooth"
@@ -80,8 +82,8 @@ const Quiz = ({
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{
-									duration: 0.5,
-									delay: index * 0.3,
+									duration: 0.3,
+									delay: index * 0.2,
 									ease: "easeOut",
 								}}
 							>

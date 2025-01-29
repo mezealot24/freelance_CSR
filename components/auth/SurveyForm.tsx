@@ -11,7 +11,7 @@ import {
 	scamTypeOptions,
 	provinces,
 } from "@/data/platformOptions";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import {
 	Select,
 	SelectContent,
@@ -119,10 +119,11 @@ const SurveyForm: React.FC = () => {
 			onSubmit={handleSubmit(onSubmit)}
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
-			className="space-y-6 p-6 bg-white rounded-xl shadow-lg max-w-xl mx-auto"
+			className="space-y-6 p-8 bg-white rounded-2xl mx-auto max-w-xl
+    border-4 border-border shadow-comic hover:shadow-comic-hover hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200"
 		>
 			{/* Age Range */}
-			<div>
+			<div className="comic">
 				<Label htmlFor="ageRange">ช่วงอายุ</Label>
 				<Controller
 					name="ageRange"
@@ -331,7 +332,7 @@ const SurveyForm: React.FC = () => {
 				)}
 			</div>
 
-			<Button type="submit" className="w-full" disabled={isSubmitting}>
+			<Button disabled={isSubmitting}>
 				{isSubmitting ? (
 					<div className="flex items-center justify-center">
 						<span className="mr-2">กำลังส่งข้อมูล</span>

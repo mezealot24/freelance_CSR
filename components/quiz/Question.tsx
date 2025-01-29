@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useQuizStore } from "@/store/quizStore";
 import { quizQuestions } from "@/data/quizQuestions";
 import {
@@ -9,8 +8,8 @@ import {
 	TrueOrFalseQuestion,
 	ChoiceQuestion,
 } from "@/types/question";
-import { Button } from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface QuestionProps {
 	questionIndex: number;
@@ -73,7 +72,7 @@ const Question = ({ questionIndex, onNext }: QuestionProps) => {
 	};
 
 	return (
-		<div className="container mx-auto h-[45vh] px-4 py-2">
+		<div className="container mx-auto h-[45vh] px-4 py-2 overflow-scroll">
 			<motion.div
 				variants={cardAnimation}
 				initial="initial"
@@ -81,70 +80,68 @@ const Question = ({ questionIndex, onNext }: QuestionProps) => {
 				exit="exit"
 				transition={{ duration: 0.5, ease: "easeOut" }}
 			>
-				<Card className="w-full max-w-lg mx-auto h-full">
-					<CardHeader>
+				<div className="w-full max-w-lg mx-auto h-full bg-white rounded-lg shadow-lg">
+					<div className="p-6">
 						<div>
-							{/* 							<Image
+							{/* <Image
 								src={`/icons/scammer-avatars/question-${question.id}.svg`}
 								alt={`Scammer icon for question ${question.id}`}
 								className="w-16 h-16 mx-auto mb-4"
 								width={64}
 								height={64}
 							/> */}
-							<CardTitle>
-								<h2 className="text-xl font-semibold text-center">
-									{question.question}
-								</h2>
-							</CardTitle>
+							<h2 className="text-xl font-semibold text-center text-gray-900">
+								{question.question}
+							</h2>
 						</div>
-					</CardHeader>
+					</div>
 
 					{phase === "question" && (
-						<CardContent className="flex flex-col space-y-4">
-							{question.type === "trueorfalse" ? (
-								<div className="flex justify-around">
-									<Button
-										onClick={() => handleAnswer(false)}
-										className="btn btn-outline btn-green"
-									>
-										Safe
-									</Button>
-									<Button
-										onClick={() => handleAnswer(true)}
-										className="btn btn-outline btn-red"
-									>
-										Scam
-									</Button>
-								</div>
-							) : (
-								<div className="grid grid-cols-1 gap-4 text-sm">
-									{(question as ChoiceQuestion).options.map((option, index) => (
-										<Button
-											key={index}
-											onClick={() => handleAnswer(index)}
-											className="btn btn-outline"
+						<div className="px-6 pb-6">
+							<div className="flex flex-col space-y-4">
+								{question.type === "trueorfalse" ? (
+									<div className="flex justify-around gap-4">
+										<button
+											onClick={() => handleAnswer(false)}
+											className="w-full py-2 px-4 text-green-600 border-2 border-green-600 rounded-lg hover:bg-green-50 transition-colors"
 										>
-											{option}
-										</Button>
-									))}
-								</div>
-							)}
-						</CardContent>
+											Safe
+										</button>
+										<button
+											onClick={() => handleAnswer(true)}
+											className="w-full py-2 px-4 text-red-600 border-2 border-red-600 rounded-lg hover:bg-red-50 transition-colors"
+										>
+											Scam
+										</button>
+									</div>
+								) : (
+									<div className="grid grid-cols-1 gap-4 text-sm">
+										{(question as ChoiceQuestion).options.map(
+											(option, index) => (
+												<button
+													key={index}
+													onClick={() => handleAnswer(index)}
+													className="w-full py-2 px-4 text-gray-700 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+												>
+													{option}
+												</button>
+											)
+										)}
+									</div>
+								)}
+							</div>
+						</div>
 					)}
 
 					{phase === "explanation" && (
-						<CardContent>
-							<p className="text-center text-gray-700">
+						<div className="px-6 pb-6">
+							<p className="text-center text-gray-700 mb-4">
 								{question.explanation}
 							</p>
-							<div className="text-center mt-4">
-								<Button onClick={handleNext} className="btn btn-primary">
-									Next
-								</Button>
-							</div>
-						</CardContent>
+							<Button onClick={handleNext}>Next</Button>
+						</div>
 					)}
-				</Card>
+				</div>
 			</motion.div>
 		</div>
 	);
