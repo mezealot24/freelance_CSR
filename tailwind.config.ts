@@ -1,11 +1,13 @@
-import animatePlugin from "tailwindcss-animate";
+// Note: This file is used to configure the Tailwind CSS framework
+import type { Config } from "tailwindcss";
 
-export default {
-    darkMode: ["class"],
-    content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}", // ไฟล์ที่ต้องการใช้ Tailwind CSS
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+const config: Config = {
+  
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -118,9 +120,8 @@ export default {
   		'accordion-up': 'accordion-up 0.2s ease-out'
   	}
   },
-    plugins: [animatePlugin, require("tailwindcss-animate")]
-	 // ใช้ตัวแปร animatePlugin ที่ import มา
-  };
+  plugins: [require("tailwindcss-animate")],
+};
 
- 
+export default config;
 

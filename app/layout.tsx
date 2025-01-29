@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
-
 import "./globals.css";
 
 import React from "react";
@@ -27,7 +26,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" className="h-full bg-gray-900 dark:text-white">
+		<html lang="en" className="h-full bg-gray-900 text-white">
 			<body
 				className={`
 			${geistSans.variable} 
