@@ -39,6 +39,7 @@
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3",
+        "@shadcn/ui": "^0.0.4",
         "@tailwindcss/postcss": "^4.0.0",
         "@types/node": "^20.17.16",
         "@types/postcss-load-config": "^3.0.1",
