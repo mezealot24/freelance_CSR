@@ -1,13 +1,15 @@
 "use client";
 import React from "react";
 import { useQuizStore } from "@/store/quizStore";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { useUser } from "@/context/UserContext";
 
 export default function QuizResultPage() {
 	const { score, totalQuestions, resetQuiz } = useQuizStore();
 	const router = useRouter();
+	const { userID, formData, clearUserData } = useUser();
 
 	const calculatePercentage = () => {
 		return Math.round((score / totalQuestions) * 100);
@@ -21,15 +23,34 @@ export default function QuizResultPage() {
 		return "Keep Learning! 📚";
 	};
 
-	const handleRestartQuiz = () => {
-		// Reset quiz state
-		resetQuiz();
+	const handleSubmitScore = async () => {
+		if (!userID || !formData) {
+			alert("Missing user data or form data");
+			return;
+		}
 
-		// Clear local storage completely
-		localStorage.clear();
+		try {
+			const response = await fetch("/result/api", {
+				// Updated endpoint
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ userID, score, formData }),
+			});
 
-		// Navigate back to the quiz page
-		router.push("/quiz");
+			const result = await response.json();
+
+			if (!response.ok) {
+				throw new Error(result.error || "Failed to submit score");
+			}
+
+			clearUserData();
+			router.push("/thankpage");
+		} catch (error) {
+			console.error("Error submitting score:", error);
+			alert("An error occurred while submitting your score. Please try again.");
+		}
 	};
 
 	return (
@@ -51,10 +72,10 @@ export default function QuizResultPage() {
 					</div>
 
 					<Button
-						onClick={handleRestartQuiz}
+						onClick={handleSubmitScore}
 						className="w-full bg-green-600 hover:bg-green-700 text-white"
 					>
-						Restart Quiz
+						Submit Score
 					</Button>
 				</CardContent>
 			</Card>

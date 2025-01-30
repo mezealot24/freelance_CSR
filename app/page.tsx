@@ -9,9 +9,9 @@ const Home = () => {
 		window.location.href = "/form";
 	};
 
-	const handleQuizClick = () => {
+	/* 	const handleQuizClick = () => {
 		window.location.href = "/quiz";
-	};
+	}; */
 
 	return (
 		<section className="min-h-screen flex items-center justify-center">
@@ -25,9 +25,9 @@ const Home = () => {
 							<Button variant="comic" onClick={handleProtectionClick}>
 								Survey
 							</Button>
-							<Button variant="comic" onClick={handleQuizClick}>
+							{/* 							<Button variant="comic" onClick={handleQuizClick}>
 								Quiz
-							</Button>
+							</Button> */}
 						</div>
 					</div>
 

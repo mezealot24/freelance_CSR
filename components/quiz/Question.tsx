@@ -8,8 +8,8 @@ import {
 	TrueOrFalseQuestion,
 	ChoiceQuestion,
 } from "@/types/question";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 interface QuestionProps {
 	questionIndex: number;
@@ -18,13 +18,19 @@ interface QuestionProps {
 
 const Question = ({ questionIndex, onNext }: QuestionProps) => {
 	const router = useRouter();
-	const { setScore, setCurrentQuestion, setIsAnswerCorrect, setQuizComplete } =
-		useQuizStore();
+	const {
+		setScore,
+		setCurrentQuestion,
+		setIsAnswerCorrect,
+		setQuizComplete,
+		totalQuestions,
+	} = useQuizStore();
 
 	const question: QuizQuestion = quizQuestions[questionIndex];
 	const [phase, setPhase] = useState<"question" | "explanation" | "next">(
 		"question"
 	);
+	const isLastQuestion = questionIndex === totalQuestions - 1;
 
 	const handleAnswer = (answer: boolean | number) => {
 		let isCorrect: boolean;
@@ -50,18 +56,17 @@ const Question = ({ questionIndex, onNext }: QuestionProps) => {
 	};
 
 	const handleNext = () => {
-		const currentQuestion = useQuizStore.getState().currentQuestion;
-
-		if (currentQuestion + 1 < quizQuestions.length) {
-			setCurrentQuestion(currentQuestion + 1);
-
-			if (onNext) {
-				onNext();
-			}
-		} else {
-			// Ensure quiz is completed and redirected for the last question
+		if (isLastQuestion) {
 			setQuizComplete(true);
 			router.push("/result");
+			return;
+		}
+
+		const currentQuestion = useQuizStore.getState().currentQuestion;
+		setCurrentQuestion(currentQuestion + 1);
+
+		if (onNext) {
+			onNext();
 		}
 	};
 
@@ -83,13 +88,6 @@ const Question = ({ questionIndex, onNext }: QuestionProps) => {
 				<div className="w-full max-w-lg mx-auto h-full bg-white rounded-lg shadow-lg">
 					<div className="p-6">
 						<div>
-							{/* <Image
-								src={`/icons/scammer-avatars/question-${question.id}.svg`}
-								alt={`Scammer icon for question ${question.id}`}
-								className="w-16 h-16 mx-auto mb-4"
-								width={64}
-								height={64}
-							/> */}
 							<h2 className="text-xl font-semibold text-center text-gray-900">
 								{question.question}
 							</h2>
@@ -138,7 +136,14 @@ const Question = ({ questionIndex, onNext }: QuestionProps) => {
 							<p className="text-center text-gray-700 mb-4">
 								{question.explanation}
 							</p>
-							<Button onClick={handleNext}>Next</Button>
+							<Button
+								onClick={handleNext}
+								className={
+									isLastQuestion ? "bg-green-600 hover:bg-green-700" : ""
+								}
+							>
+								{isLastQuestion ? "ดูผลคะแนน" : "Next"}
+							</Button>
 						</div>
 					)}
 				</div>

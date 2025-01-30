@@ -12,20 +12,22 @@ export async function POST(req: Request) {
   }
 
   try {
-    const data = await req.json();
-    console.log("Received form data:", data);
+    const { userID, score, formData } = await req.json();
+    
+    // Reorder data to match spreadsheet columns
     const rowData = [
-      data.ageRange,
-      data.province,
-      data.occupation,
-      data.education,
-      data.hasExperiencedScam,
-      data.scamTypes.join(", "),
-      data.socialMediaUsage,
-      data.platforms.join(", "),
-      new Date().toISOString()
+      formData.ageRange,
+      formData.province,
+      formData.occupation,
+      formData.education,
+      formData.hasExperiencedScam,
+      formData.scamTypes.length > 0 ? formData.scamTypes.join(", ") : "",  // Handle empty array
+      formData.socialMediaUsage,
+      formData.platforms.length > 0 ? formData.platforms.join(", ") : "",   // Handle empty array
+      new Date().toISOString(),
+      userID,
+      score || 0  // Default to 0 if score is undefined
     ];
-    console.log("Prepared row data:", rowData);
 
     const response = await axios({
       method: 'POST',
@@ -36,8 +38,6 @@ export async function POST(req: Request) {
         'Accept': 'application/json'
       }
     });
-
-    console.log("Google Script response:", response.data);
 
     if (response.status !== 200) {
       throw new Error('Failed to save to Google Sheets');

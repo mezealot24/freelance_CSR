@@ -42,7 +42,7 @@ const Quiz = ({
 			!isScenarioComplete
 		) {
 			setIsScenarioComplete(true);
-			setQuizComplete(true);
+
 			onScenarioComplete(true);
 		}
 	}, [

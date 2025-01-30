@@ -8,15 +8,8 @@ const ChatHeader = () => {
 			<div className="flex items-center space-x-3">
 				<ChevronLeft className="w-6 h-6 cursor-pointer" />
 				<div className="flex items-center space-x-3">
-					<div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
-						<img
-							src="/api/placeholder/40/40"
-							alt="Profile"
-							className="w-full h-full object-cover"
-						/>
-					</div>
 					<div>
-						<h2 className="font-semibold text-lg">คุณสมศรี</h2>
+						<h2 className="font-semibold text-lg">คุณสมชาย</h2>
 						<p className="text-sm text-gray-100">ออนไลน์</p>
 					</div>
 				</div>

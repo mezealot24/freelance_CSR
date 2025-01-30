@@ -19,28 +19,35 @@ export const useQuizStore = create<QuizState>((set) => ({
   quizComplete: false,
   currentQuestion: 0,
   totalQuestions: quizQuestions.length,
-  score: 0, // ค่าเริ่มต้นเป็น 0
+  score: 0,
   isAnswerCorrect: null,
+
   setQuizComplete: (complete) => set({ quizComplete: complete }),
-  setCurrentQuestion: (questionIndex) => 
+
+  setCurrentQuestion: (questionIndex) =>
     set((state) => {
-      if (questionIndex >= state.totalQuestions) {
+      if (questionIndex > state.totalQuestions - 1) { // Changed from >= to >
         return { 
           quizComplete: true,
           currentQuestion: state.totalQuestions - 1 
         };
       }
-      
       return { 
         currentQuestion: questionIndex,
-        isAnswerCorrect: false
+        isAnswerCorrect: null
       };
     }),
+
   setScore: (score) =>
-    set((state) => ({
-      score: score >= 0 ? score : state.score, // ป้องกันค่าติดลบ
-    })),
-    setIsAnswerCorrect: (isCorrect: boolean | null) => set({ isAnswerCorrect: isCorrect }),
+    set((state) => {
+      const newScore = score >= 0 ? score : state.score;
+      localStorage.setItem("quizScore", JSON.stringify(newScore)); // บันทึกคะแนน
+      return { score: newScore };
+    }),
+
+  setIsAnswerCorrect: (isCorrect: boolean | null) =>
+    set({ isAnswerCorrect: isCorrect }),
+
   resetQuiz: () => {
     localStorage.removeItem("quizScore");
     set({
@@ -50,6 +57,7 @@ export const useQuizStore = create<QuizState>((set) => ({
       quizComplete: false,
     });
   },
+
   loadScoreFromStorage: () => {
     const storedScore = Number(localStorage.getItem("quizScore")) || 0;
     set({ score: storedScore });
