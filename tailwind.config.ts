@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
@@ -24,63 +24,59 @@ const config = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
+        border: "#262626",
+        input: "#262626",
+        ring: "#e63946",
+        background: "#0f172a",
+        foreground: "#f2f2f2",
+        primary: "#1c1c22",        
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "#262626",
+          foreground: "#fafafa",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "#992b2b",
+          foreground: "#ffeded",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "#262626",
+          foreground: "#9ea3b0",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#2a1e1a",
+          foreground: "#fafafa",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "#181818",
+          foreground: "#f2f2f2",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "#1a1a1a",
+          foreground: "#f2f2f2",
         },
-        // เพิ่มสีสำหรับ chart
         chart: {
-          1: "hsl(var(--chart-1))",
-          2: "hsl(var(--chart-2))",
-          3: "hsl(var(--chart-3))",
-          4: "hsl(var(--chart-4))",
-          5: "hsl(var(--chart-5))",
+          1: "#2a72d4",
+          2: "#28a745",
+          3: "#f4a261",
+          4: "#9b5de5",
+          5: "#e63946",
         },
       },
       boxShadow: {
-        'comic': '8px 8px 0px 0px #10162F',
-        'comic-sm': '4px 4px 0px 0px #10162F',
-        'comic-hover': '6px 6px 0px 0px #10162F',
-        'comic-sm-hover': '2px 2px 0px 0px #10162F',
+        comic: "8px 8px 0px 0px #10162F",
+        "comic-sm": "4px 4px 0px 0px #10162F",
+        "comic-hover": "6px 6px 0px 0px #10162F",
+        "comic-sm-hover": "2px 2px 0px 0px #10162F",
       },
       borderWidth: {
-        '3': '3px',
-        '4': '4px',
+        3: "3px",
+        4: "4px",
       },
       transitionProperty: {
-        'all': 'all',
+        all: "all",
       },
       transitionDuration: {
-        '200': '200ms',
+        200: "200ms",
       },
       keyframes: {
         "accordion-down": {
@@ -99,6 +95,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;

@@ -116,7 +116,7 @@ const SurveyPage: React.FC = () => {
 			onSubmit={handleSubmit(onSubmit)}
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
-			className="space-y-6 p-8 bg-white rounded-2xl mx-auto max-w-xl
+			className="space-y-6 p-8 bg-primary text-foreground rounded-2xl mx-auto max-w-xl
     border-4 border-border shadow-comic hover:shadow-comic-hover hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200"
 		>
 			{/* Age Range */}
