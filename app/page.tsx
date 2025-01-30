@@ -19,7 +19,7 @@ const Home = () => {
 				<div className="flex flex-col xl:flex-row items-center justify-between xl:min-h-[calc(100vh-4rem)]">
 					{/* Text */}
 					<div className="text-center xl:text-left w-full xl:w-1/2 order-2 xl:order-none">
-						<h1 className="mb-6 text-accent">Digital Awareness</h1>
+						<h1 className="mb-6 text-accent text-3xl">Digital Awareness</h1>
 						{/* Buttons */}
 						<div className="flex flex-col xl:flex-row items-center gap-8">
 							<Button variant="comic" onClick={handleProtectionClick}>
