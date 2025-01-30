@@ -3,7 +3,7 @@ import React from "react";
 import { useQuizStore } from "@/store/quizStore";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/Button";
 import { useUser } from "@/context/UserContext";
 
 export default function QuizResultPage() {

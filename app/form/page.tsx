@@ -22,7 +22,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { formSchema, FormSchema } from "@/lib/formSchema";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/Button";
 import { useUser } from "../../context/UserContext";
 import { v4 as uuidv4 } from "uuid"; // Import UUID
 

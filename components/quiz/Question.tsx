@@ -8,7 +8,7 @@ import {
 	TrueOrFalseQuestion,
 	ChoiceQuestion,
 } from "@/types/question";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/Button";
 import { useRouter } from "next/navigation";
 
 interface QuestionProps {
