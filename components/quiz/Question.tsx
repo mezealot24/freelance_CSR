@@ -77,7 +77,7 @@ const Question = ({ questionIndex, onNext }: QuestionProps) => {
 	};
 
 	return (
-		<div className="container mx-auto h-[45vh] px-4 py-2 overflow-scroll">
+		<div className="container mx-auto h-[35vh] px-4 py-2 overflow-scroll">
 			<motion.div
 				variants={cardAnimation}
 				initial="initial"
@@ -88,9 +88,9 @@ const Question = ({ questionIndex, onNext }: QuestionProps) => {
 				<div className="w-full max-w-lg mx-auto h-full bg-white rounded-lg shadow-lg">
 					<div className="p-6">
 						<div>
-							<h2 className="text-xl font-semibold text-center text-gray-900">
+							<h3 className="text-xl font-semibold text-center text-gray-900">
 								{question.question}
-							</h2>
+							</h3>
 						</div>
 					</div>
 

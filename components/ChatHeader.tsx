@@ -6,10 +6,9 @@ const ChatHeader = () => {
 		<div className="flex items-center justify-between bg-rose-500 text-white p-4 w-full">
 			{/* Left Section */}
 			<div className="flex items-center space-x-3">
-				<ChevronLeft className="w-6 h-6 cursor-pointer" />
-				<div className="flex items-center space-x-3">
+				<div className="flex items-center space-x-3 pl-4">
 					<div>
-						<h2 className="font-semibold text-lg">คุณสมชาย</h2>
+						<h3 className="font-semibold text-lg">คุณสมชาย</h3>
 						<p className="text-sm text-gray-100">ออนไลน์</p>
 					</div>
 				</div>

@@ -1,8 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
+ 
 
 @layer base {
   :root {
@@ -31,7 +30,18 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    h1 {
+      @apply text-[48px] xl:text-[80px] leading-[1.1] font-semibold;
+    }
+    h2 {
+      @apply text-[36px] xl:text-[48px] leading-[1.1] font-semibold;
+    }
+    h3 {
+      @apply text-[20px] xl:text-[24px] leading-[1.1] font-semibold;
+    }
   }
+    
+    
  
   .dark {
     --background: 20 14.3% 4.1%;

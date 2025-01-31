@@ -88,7 +88,7 @@ export default function Page() {
 						(quizRendered && !hideQuestion && isScenarioComplete && (
 							<div
 								className={`fixed bottom-0 left-0 right-0 
-                  min-h-[50vh] px-4 py-8 
+                  min-h-[40vh] px-4 py-8
                   w-full z-50 shadow-lg rounded-t-3xl 
                   overflow-hidden transition-colors duration-500
                   ${getBgColor()}
